@@ -10,7 +10,6 @@ const app = express();
 // configurer les middlewares
 app.use(cors());
 app.use(express.json()) // pour lire le JSON des requêtes
-app.use(express.static('../frontend'))
 
 // connecter la bdd
 const db = new sqlite3.Database('pursuitdb.db');
