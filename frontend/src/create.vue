@@ -10,12 +10,12 @@
     <label for="type-select">Choose a type&nbsp;:</label><br>
 
     <select v-model="selectedTypeId" name="type" id="type-select">
-      <option value="">--Please choose an option--</option>
+      <option value="" disabled>--Please choose an option--</option>
       <option v-for="type in types" :key="type.id" :value="type.id">{{ type.name }}</option>
     </select><br>
 
     <label> {{  label }}</label><br>
-    <input :type="inputType" v-model="goalValue" id="value" name="value" min="0" required /><br><br>
+    <input :type="inputType" v-model="goalValue" id="value" name="value" min="0" :disabled="status === 'disabled'" required /><br><br>
 
     <button type="submit">Create Goal</button>
     <button type="button" onclick="window.history.back();">Back</button>
@@ -45,6 +45,7 @@ export default {
       return this.types.find(type => type.id === this.selectedTypeId);
     },
 
+    // Déterminer le type d'input à afficher en fonction du type de l'objectif sélectionné
     inputType() {
       if (!this.selectedType) return 'text'
 
@@ -52,15 +53,26 @@ export default {
       if (this.selectedType.name === 'Distance') return 'number'
     },
 
+    // Déterminer si l'input doit être activé ou désactivé en fonction du type de l'objectif sélectionné
+    status() {
+      if (!this.selectedType) return 'disabled'
+
+      if (this.selectedType.name === 'Time') return 'enabled'
+      if (this.selectedType.name === 'Distance') return 'enabled'
+    },
+
+    // Déterminer le label à afficher en fonction du type de l'objectif sélectionné
     label() {
-      if (!this.selectedType) return 'Value'
+      if (!this.selectedType) return 'Choose a type to enter a value'
 
       if (this.selectedType.name === 'Time') return 'Duration'
       if (this.selectedType.name === 'Distance') return 'Distance (km)'
-    }
+    },
+
   },
 
   watch: {
+    // Réinitialiser la valeur de l'objectif lorsque le type sélectionné change
     selectedTypeId() {
       this.goalValue = '';
     }

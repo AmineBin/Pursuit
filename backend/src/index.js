@@ -25,6 +25,9 @@ app.listen(3000, () => {
 })
 
 
+// --- Types ---
+
+
 // récupérer les types d'objectifs
 app.get('/api/types', (req, res) => {
         db.all('SELECT * FROM types', (err, rows) => {
@@ -34,6 +37,10 @@ app.get('/api/types', (req, res) => {
             res.json(rows); // tableau qui contient les types
         });
 });
+
+
+// --- Objectifs ---
+
 
 // récupérer les objectifs d'un utilisateur
 app.get('/api/goals', (req, res) => {
@@ -104,6 +111,10 @@ app.get('/api/comments', (req, res) => {
         });
 });
 
+
+// --- Commentaires ---
+
+
 // Ajouter un nouveau commentaire
 app.post('/api/comment', (req, res) => {
     const text = req.body.text;
@@ -129,7 +140,7 @@ app.patch('/api/comments/', (req, res) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
-        res.json({ message: "Objectif modifié" });
+        res.json({ message: "Commentaire modifié" });
     });
 });
 
@@ -143,3 +154,32 @@ app.delete('/api/comments/', (req, res) => {
         res.json({ message: "Commentaire supprimé" });
     });
 });
+
+// --- Utilisateurs ---
+
+
+app.get('/api/users', (req, res) => {
+    db.get('SELECT 1 FROM users WHERE email = ? OR name = ?', [req.query.email, req.query.name], (err, row) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({ exists: !!row}); // tableau qui contient les utilisateurs
+    });
+});
+
+app.post('/api/users', (req, res) => {
+    const google_id = req.body.google_id;
+    const name = req.body.name;
+    const email = req.body.email;
+    const password = req.body.password;
+    
+
+    db.run('INSERT INTO users ("google_id", "name", "email","password") VALUES (?,?,?,?)'
+        , [name, email, password, google_id], (err) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({ message: "Utilisateur créé" });
+    });
+});
+

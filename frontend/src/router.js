@@ -3,6 +3,8 @@ import Home from './Home.vue'
 import Form from './Form.vue'
 import Create from './Create.vue'
 import List from './List.vue'
+import Login from './Login.vue'
+import Register from './Register.vue'
 
 // définir les routes
 const routes = [
@@ -25,6 +27,16 @@ const routes = [
         path: '/list',
         name: 'List',
         component: List
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: Register
     }
 ]
 
