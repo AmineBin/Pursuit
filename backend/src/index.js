@@ -158,12 +158,21 @@ app.delete('/api/comments/', (req, res) => {
 // --- Utilisateurs ---
 
 
-app.get('/api/users', (req, res) => {
-    db.get('SELECT 1 FROM users WHERE email = ? OR name = ?', [req.query.email, req.query.name], (err, row) => {
+app.get('/api/users/check-email', (req, res) => {
+    db.get('SELECT 1 FROM users WHERE email = ?', [req.query.email], (err, row) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
-        res.json({ exists: !!row}); // tableau qui contient les utilisateurs
+        res.json({ emailExists: !!row}); // tableau qui contient les utilisateurs
+    });
+});
+
+app.get('/api/users/check-name', (req, res) => {
+    db.get('SELECT 1 FROM users WHERE name = ?', [req.query.name], (err, row) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({ nameExists: !!row}); // tableau qui contient les utilisateurs
     });
 });
 
@@ -175,11 +184,11 @@ app.post('/api/users', (req, res) => {
     
 
     db.run('INSERT INTO users ("google_id", "name", "email","password") VALUES (?,?,?,?)'
-        , [name, email, password, google_id], (err) => {
+        , [google_id, name, email, password], (err) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
-        res.json({ message: "Utilisateur créé" });
+        res.json({ success: true, message: "Utilisateur créé" });
     });
 });
 
