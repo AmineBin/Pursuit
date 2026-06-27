@@ -30,12 +30,12 @@ app.listen(3000, () => {
 
 // récupérer les types d'objectifs
 app.get('/api/types', (req, res) => {
-        db.all('SELECT * FROM types', (err, rows) => {
-            if (err) {
-                return res.status(500).json({ error: err.message });
-            }
-            res.json(rows); // tableau qui contient les types
-        });
+    db.all('SELECT * FROM types', (err, rows) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(rows); // tableau qui contient les types
+    });
 });
 
 
@@ -44,8 +44,7 @@ app.get('/api/types', (req, res) => {
 
 // récupérer les objectifs d'un utilisateur
 app.get('/api/goals', (req, res) => {
-    const user_id = req.query.google_id;
-    db.all('SELECT * FROM goals where user_id = ?', [user_id], (err, rows) => {
+    db.all('SELECT * FROM goals', (err, rows) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -65,12 +64,12 @@ app.post('/api/goals', (req, res) => {
     const periode_id = req.body.periode_id;
 
     db.run('INSERT INTO goals ("name","type_id","time","quantity","created_at","user_id","periode_id") VALUES (?,?,?,?,?,?,?)'
-        , [name,  type, time, quantity, created_at, user_id, periode_id], (err) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json({ message: "Objectif créé" });
-    });
+        , [name, type, time, quantity, created_at, user_id, periode_id], (err) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.json({ message: "Objectif créé" });
+        });
 });
 
 // modifier un objectif
@@ -103,12 +102,12 @@ app.delete('/api/goals/', (req, res) => {
 
 // récupérer les commentaires
 app.get('/api/comments', (req, res) => {
-        db.all('SELECT * FROM comments ', (err, rows) => {
-            if (err) {
-                return res.status(500).json({ error: err.message });
-            }
-            res.json(rows); // tableau qui contient les commentaires
-        });
+    db.all('SELECT * FROM comments ', (err, rows) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(rows); // tableau qui contient les commentaires
+    });
 });
 
 
@@ -123,11 +122,11 @@ app.post('/api/comment', (req, res) => {
 
     db.run('INSERT INTO comments ("text","created_at","user_id") VALUES (?,?,?)'
         , [text, created_at, user_id], (err) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json({ message: "Commentaire créé" });
-    });
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.json({ message: "Commentaire créé" });
+        });
 });
 
 // modifier un commentaire
@@ -163,7 +162,7 @@ app.get('/api/users/check-email', (req, res) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
-        res.json({ emailExists: !!row}); // tableau qui contient les utilisateurs
+        res.json({ emailExists: !!row }); // tableau qui contient les utilisateurs
     });
 });
 
@@ -172,23 +171,22 @@ app.get('/api/users/check-name', (req, res) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
-        res.json({ nameExists: !!row}); // tableau qui contient les utilisateurs
+        res.json({ nameExists: !!row }); // tableau qui contient les utilisateurs
     });
 });
 
 app.post('/api/users', (req, res) => {
-    const google_id = req.body.google_id;
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
-    
 
-    db.run('INSERT INTO users ("google_id", "name", "email","password") VALUES (?,?,?,?)'
-        , [google_id, name, email, password], (err) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json({ success: true, message: "Utilisateur créé" });
-    });
+
+    db.run('INSERT INTO users ("name", "email","password") VALUES (?,?,?)'
+        , [name, email, password], (err) => {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.json({ success: true, message: "Utilisateur créé" });
+        });
 });
 

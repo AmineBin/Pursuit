@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 pursuitdb.db
+backend/pursuitdb.db
+backend/pursuitdb-journal

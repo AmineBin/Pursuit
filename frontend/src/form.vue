@@ -3,14 +3,18 @@
     <Header />
     <router-view />
     <h1>Today's goals</h1>
-      <h2>Séance de sport</h2>
-      <button @click="isActive = !isActive">
-        {{ isActive ? 'ON' : 'OFF' }}
-      </button> <br><br>
-      <input type="text" id="name" name="name" required minlength="1" maxlength="30" size="30" /><br><br>
+    <div class="grid-container">
+      <div v-for="goal in goals" :key="goal.goal_id" class="form">
+        <h2>{{ goal.name }}</h2>
+        
+        <p>{{ goal.description }}</p>
+        <div class="buttons">
+          <button type="button">Done</button>
+          <button type="button">Edit</button>
+        </div>
+      </div>
+    </div>
 
-      <button type="button">Delete</button>
-      <button type="button">Edit</button>
   </div>
 </template>
 
@@ -24,8 +28,18 @@ export default {
 
   data() {
     return {
-      isActive: false
+      goals: [],
     }
-  }
+  },
+
+  mounted() {
+
+    fetch(`http://localhost:3000/api/goals`)
+      .then(res => res.json())
+      .then(data => {
+        this.goals = data;
+      })
+      .catch(err => console.error(err));
+  },
 };
 </script>
