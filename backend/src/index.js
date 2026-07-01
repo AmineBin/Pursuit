@@ -42,9 +42,21 @@ app.get('/api/types', (req, res) => {
 // --- Objectifs ---
 
 
-// récupérer les objectifs d'un utilisateur
+// récupérer tous les objectifs
 app.get('/api/goals', (req, res) => {
     db.all('SELECT * FROM goals', (err, rows) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(rows);
+    });
+});
+
+// récupérer les objectifs par période
+app.get('/api/goals/period', (req, res) => {
+    const periodId = req.query.period_id;
+
+    db.all('SELECT * FROM goals WHERE period_id = ?', [periodId], (err, rows) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -143,7 +155,7 @@ app.patch('/api/comments/', (req, res) => {
     });
 });
 
-// supprimer un objectif
+// supprimer un commentaire
 app.delete('/api/comments/', (req, res) => {
     const comment_id = req.body.goal_id;
     db.run('DELETE FROM comments WHERE comment_id = ?', [comment_id], (err) => {

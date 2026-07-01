@@ -9,7 +9,7 @@
 
     <label for="type-select">Choose a type&nbsp;:</label><br>
 
-    <select v-model="selectedTypeId" name="type" id="type-select">
+    <select v-model.number="selectedTypeId" name="type" id="type-select">
       <option value="" disabled>--Please choose an option--</option>
       <option v-for="type in types" :key="type.id" :value="type.id">{{ type.name }}</option>
     </select><br>

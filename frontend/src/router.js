@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from './Home.vue'
-import Form from './Form.vue'
+import MyGoals from './MyGoals.vue'
 import Create from './Create.vue'
-import List from './List.vue'
+import GoalsCreated from './GoalsCreated.vue'
 import Login from './Login.vue'
 import Register from './Register.vue'
 
@@ -14,9 +14,9 @@ const routes = [
         component: Home
     },
     {
-        path: '/form',
-        name: 'Form',
-        component: Form
+        path: '/mygoals',
+        name: 'MyGoals',
+        component: MyGoals
     },
     {
         path: '/create',
@@ -25,8 +25,8 @@ const routes = [
     },
     {
         path: '/list',
-        name: 'List',
-        component: List
+        name: 'GoalsCreated',
+        component: GoalsCreated
     },
     {
         path: '/login',

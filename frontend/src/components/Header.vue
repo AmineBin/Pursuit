@@ -1,10 +1,10 @@
 <template>
     <header class="header">
         <nav>
-            <router-link to="/">Accueil</router-link>
-            <router-link to="/Form">Today's goals</router-link>
-            <router-link to="/List">My goals</router-link>
-            <router-link to="/Create">Create</router-link>
+            <router-link to="/">Home</router-link>
+            <router-link to="/mygoals">My goals</router-link>
+            <router-link to="/list">Goals created</router-link>
+            <router-link to="/create">Create</router-link>
         </nav>
     </header>
 </template>
