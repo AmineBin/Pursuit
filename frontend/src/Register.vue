@@ -10,7 +10,7 @@
     <input type="password" id="confirm-password" name="confirm-password" required size="30" v-model="confirmPassword" /><br><br>
     <p>Already have an account? <a href="/login">Login</a></p>
 
-    <button type="submit">
+    <button type="submit" class="primary-button">
       Register
     </button>
   </form>

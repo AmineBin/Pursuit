@@ -14,8 +14,8 @@
         </div>
 
         <div class="buttons">
-          <button type="button">Done</button>
-          <button type="button">Edit</button>
+          <button type="button" class="primary-button">Done</button>
+          <button type="button" class="primary-button">Edit</button>
         </div>
       </div>
     </div>
@@ -40,7 +40,7 @@ export default {
 
   mounted() {
 
-    fetch(`http://localhost:3000/api/goals/period?period_id=1`)
+    fetch(`http://localhost:3000/api/goals/frequency?frequency_id=1`)
       .then(res => res.json())
       .then(data => {
         this.goals = data;

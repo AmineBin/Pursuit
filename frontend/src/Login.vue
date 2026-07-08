@@ -5,11 +5,11 @@
   <input type="password" id="password" name="password" required size="30"/><br><br>
   <p>No Pursuit account yet? <a href="/register">Register</a></p>
 
-  <button type="submit">
+  <button type="submit" class="primary-button">
     Connect
   </button>
   
-  <button @click="login">
+  <button type="button" @click="login" class="primary-button">
     Connect with Google
   </button>
 </template>

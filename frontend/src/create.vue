@@ -1,11 +1,15 @@
 <template>
-  <div id="create">
-    <Header />
+  <Header />
     <router-view />
+  <popup class="popup">
     <h1>Enter your new goal</h1>
-    <label for="name">Enter goal's name&nbsp;:</label><br>
+    <label for="name">Title&nbsp;:</label><br>
 
     <input type="text" id="name" name="name" required minlength="1" maxlength="30" size="30" /><br>
+
+    <label for="description">Description&nbsp;:</label><br>
+
+    <input type="text" id="description" name="description" required minlength="1" maxlength="100" size="30" /><br>
 
     <label for="type-select">Choose a type&nbsp;:</label><br>
 
@@ -14,12 +18,20 @@
       <option v-for="type in types" :key="type.id" :value="type.id">{{ type.name }}</option>
     </select><br>
 
-    <label> {{  label }}</label><br>
-    <input :type="inputType" v-model="goalValue" id="value" name="value" min="0" :disabled="status === 'disabled'" required /><br><br>
+    <label for="type-select">Choose a period&nbsp;:</label><br>
 
-    <button type="submit">Create Goal</button>
-    <button type="button" onclick="window.history.back();">Back</button>
-  </div>
+    <select v-model.number="selectedPeriodId" name="type" id="type-select">
+      <option value="" disabled>--Please choose an option--</option>
+      <option v-for="period in periods" :key="period.id" :value="period.id">{{ period.name }}</option>
+    </select><br>
+
+    <label> {{ label }}</label><br>
+    <input :type="inputType" v-model="goalValue" id="value" name="value" min="0" :disabled="status === 'disabled'"
+      required /><br><br>
+
+    <button type="submit" class="primary-button">Create Goal</button>
+    <button type="button" onclick="window.history.back();" class="primary-button">Back</button>
+  </popup>
 </template>
 
 <script>

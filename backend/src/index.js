@@ -39,6 +39,19 @@ app.get('/api/types', (req, res) => {
 });
 
 
+// --- Fréquences ---
+
+// récupérer les fréquences
+app.get('/api/frequencies', (req, res) => {
+    db.all('SELECT * FROM frequencies', (err, rows) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(rows);
+    });
+});
+
+
 // --- Objectifs ---
 
 
@@ -52,11 +65,11 @@ app.get('/api/goals', (req, res) => {
     });
 });
 
-// récupérer les objectifs par période
-app.get('/api/goals/period', (req, res) => {
-    const periodId = req.query.period_id;
+// récupérer les objectifs par fréquence
+app.get('/api/goals/frequency', (req, res) => {
+    const frequencyId = req.query.frequency_id;
 
-    db.all('SELECT * FROM goals WHERE period_id = ?', [periodId], (err, rows) => {
+    db.all('SELECT * FROM goals WHERE frequency_id = ?', [frequencyId], (err, rows) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -65,18 +78,17 @@ app.get('/api/goals/period', (req, res) => {
 });
 
 // Ajouter un nouvel objectif
-app.post('/api/goals', (req, res) => {
+app.post('/api/goal', (req, res) => {
     const name = req.body.name;
-    const type = req.body.type;
-    const time = req.body.time;
-    const quantity = req.body.quantity;
+    const description = req.body.description;
+    const type_id = req.body.type_id;
+    const frequency_id = req.body.frequency_id;
+    const user_id = req.body.user_id;
     const created_at = req.body.created_at;
     const updated_at = req.body.updated_at;
-    const user_id = req.body.user_id;
-    const periode_id = req.body.periode_id;
 
-    db.run('INSERT INTO goals ("name","type_id","time","quantity","created_at","user_id","periode_id") VALUES (?,?,?,?,?,?,?)'
-        , [name, type, time, quantity, created_at, user_id, periode_id], (err) => {
+    db.run('INSERT INTO goals ("name","description", "type_id","frequency_id","user_id", "created_at", "updated_at") VALUES (?,?,?,?,?,?,?)'
+        , [name, description, type_id, frequency_id, user_id, created_at, updated_at], (err) => {
             if (err) {
                 return res.status(500).json({ error: err.message });
             }
@@ -88,12 +100,13 @@ app.post('/api/goals', (req, res) => {
 app.patch('/api/goals/', (req, res) => {
     const goal_id = req.body.goal_id;
     const name = req.body.name;
-    const type = req.body.type;
-    const time = req.body.time;
-    const quantity = req.body.quantity;
+    const description = req.body.description;
+    const type_id = req.body.type_id;
+    const frequency_id = req.body.frequency_id;
+    const user_id = req.body.user_id;
     const updated_at = req.body.updated_at;
 
-    db.run('UPDATE goals SET name = ?, type_id = ?, time = ?, quantity = ?, updated_at = ?  WHERE goal_id = ?', [name, type, time, quantity, updated_at, goal_id], (err) => {
+    db.run('UPDATE goals SET name = ?, description = ?, type_id = ?, frequency_id = ?, user_id = ?, updated_at = ?  WHERE goal_id = ?', [name, description, type_id, frequency_id, user_id, updated_at, goal_id], (err) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -112,6 +125,12 @@ app.delete('/api/goals/', (req, res) => {
     });
 });
 
+
+
+
+// --- Commentaires ---
+
+
 // récupérer les commentaires
 app.get('/api/comments', (req, res) => {
     db.all('SELECT * FROM comments ', (err, rows) => {
@@ -121,10 +140,6 @@ app.get('/api/comments', (req, res) => {
         res.json(rows); // tableau qui contient les commentaires
     });
 });
-
-
-// --- Commentaires ---
-
 
 // Ajouter un nouveau commentaire
 app.post('/api/comment', (req, res) => {
