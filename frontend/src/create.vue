@@ -1,45 +1,44 @@
 <template>
   <Header />
-    <router-view />
-  <popup class="popup">
-    <h1>Enter your new goal</h1>
+  <form ref="addGoalForm" @submit.prevent="addGoal">
+    <h1>New goal</h1>
     <label for="name">Title&nbsp;:</label><br>
 
-    <input type="text" id="name" name="name" required minlength="1" maxlength="30" size="30" /><br>
+    <input v-model="name" type="text" id="name" name="name" required minlength="1" maxlength="30" size="30" /><br>
 
     <label for="description">Description&nbsp;:</label><br>
 
-    <input type="text" id="description" name="description" required minlength="1" maxlength="100" size="30" /><br>
+    <textarea v-model="description" id="description" name="description" required minlength="1" maxlength="100" size="30"
+      rows="4" cols="50"></textarea><br>
 
-    <label for="type-select">Choose a type&nbsp;:</label><br>
+    <label for="type">Type&nbsp;:</label><br>
 
-    <select v-model.number="selectedTypeId" name="type" id="type-select">
+    <select v-model.number="selectedTypeId" name="type_id" id="type_id">
       <option value="" disabled>--Please choose an option--</option>
       <option v-for="type in types" :key="type.id" :value="type.id">{{ type.name }}</option>
     </select><br>
 
-    <label for="type-select">Choose a period&nbsp;:</label><br>
+    <!-- <label>{{ label }}</label><br> -->
 
-    <select v-model.number="selectedPeriodId" name="type" id="type-select">
-      <option value="" disabled>--Please choose an option--</option>
-      <option v-for="period in periods" :key="period.id" :value="period.id">{{ period.name }}</option>
-    </select><br>
+    <!-- <input :type="inputType" v-model="goalValue" id="goalValue" name="value" min="0" :disabled="status === 'disabled'" required /><br> -->
 
-    <label> {{ label }}</label><br>
-    <input :type="inputType" v-model="goalValue" id="value" name="value" min="0" :disabled="status === 'disabled'"
-      required /><br><br>
+    <label for="frequency">Frequency&nbsp;:</label><br>
 
-    <button type="submit" class="primary-button">Create Goal</button>
-    <button type="button" onclick="window.history.back();" class="primary-button">Back</button>
-  </popup>
+    <fieldset style="display: flex; gap: 8px; border: none; padding: 0;">
+      <div v-for="frequency in frequencies" :key="frequency.frequency_id">
+        <input v-model.number="selectedFrequencyId" type="radio" :id="frequency.frequency_id" name="frequency"
+          :value="frequency.frequency_id" class="sr-only" />
+        <label :for="frequency.frequency_id" class="radio-button">{{ frequency.name }}</label>
+      </div>
+    </fieldset><br>
+    <button type="submit" class="primary-button">Create goal</button>
+  </form>
 </template>
 
 <script>
 import Header from './components/Header.vue';
-
 export default {
   name: "Create",
-
   components: {
     Header,
   },
@@ -47,46 +46,11 @@ export default {
   data() {
     return {
       types: [],
+      frequencies: [],
+      name: '',
+      description: '',
       selectedTypeId: '',
-      goalValue: '',
-    }
-  },
-
-  computed: {
-    selectedType() {
-      return this.types.find(type => type.id === this.selectedTypeId);
-    },
-
-    // Déterminer le type d'input à afficher en fonction du type de l'objectif sélectionné
-    inputType() {
-      if (!this.selectedType) return 'text'
-
-      if (this.selectedType.name === 'Time') return 'time'
-      if (this.selectedType.name === 'Distance') return 'number'
-    },
-
-    // Déterminer si l'input doit être activé ou désactivé en fonction du type de l'objectif sélectionné
-    status() {
-      if (!this.selectedType) return 'disabled'
-
-      if (this.selectedType.name === 'Time') return 'enabled'
-      if (this.selectedType.name === 'Distance') return 'enabled'
-    },
-
-    // Déterminer le label à afficher en fonction du type de l'objectif sélectionné
-    label() {
-      if (!this.selectedType) return 'Choose a type to enter a value'
-
-      if (this.selectedType.name === 'Time') return 'Duration'
-      if (this.selectedType.name === 'Distance') return 'Distance (km)'
-    },
-
-  },
-
-  watch: {
-    // Réinitialiser la valeur de l'objectif lorsque le type sélectionné change
-    selectedTypeId() {
-      this.goalValue = '';
+      selectedFrequencyId: '',
     }
   },
 
@@ -97,6 +61,39 @@ export default {
         this.types = data
       })
       .catch(err => console.error(err));
-  }
-}
+
+    fetch('http://localhost:3000/api/frequencies')
+      .then(res => res.json())
+      .then(data => {
+        this.frequencies = data
+      })
+      .catch(err => console.error(err));
+  },
+  methods: {
+    async addGoal() {
+      const goal = {
+        name: this.name,
+        description: this.description,
+        type_id: this.selectedTypeId,
+        frequency_id: this.selectedFrequencyId
+      }
+
+      const response = await fetch('http://localhost:3000/api/goal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(goal)
+      });
+      if (!response.ok) {
+        throw new Error('Error : ' + response.status)
+      }
+      this.$refs.addGoalForm.reset();
+      this.name = '';
+      this.description = '';
+      this.selectedTypeId = '';
+      this.selectedFrequencyId = '';
+    },
+  },
+};
 </script>

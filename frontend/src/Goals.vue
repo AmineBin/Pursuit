@@ -4,9 +4,9 @@
   <div id="card">
 
     <h1>My goals</h1>
-    <div class="buttons">
+    <!-- <div class="buttons">
       <button type="button" v-on:click="openPopup" class="primary-button">New goal</button>
-    </div>
+    </div> -->
     <dialog v-if="showPopup" open>
       <PopUpCreateGoal :types="types" @closePopup="showPopup = false" />
       <button type="button" @click="showPopup = false" class="primary-button">Close</button>
@@ -25,7 +25,7 @@
             </g>
           </svg>
         </button>
-        <button type="button" @click="$emit('closePopup')" class="close-btn primary-button">
+        <button type="button" @click="deleteGoal(goal.goal_id)" class="close-btn primary-button">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -100,7 +100,21 @@ export default {
       const type = this.types.find(item => item.id === typeId);
 
       return type ? type.unity : '';
-    }
+    },
+    async deleteGoal(goal_id) {
+
+      const response = await fetch('http://localhost:3000/api/goal', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ goal_id })
+      });
+      if (!response.ok) {
+        throw new Error('Error : ' + response.status)
+      }
+      this.goals = this.goals.filter(goal => goal.goal_id !== goal_id);
+    },
   },
 };
 </script>

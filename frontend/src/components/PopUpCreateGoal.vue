@@ -9,8 +9,8 @@
 
             <label for="description">Description&nbsp;:</label><br>
 
-            <input v-model="description" type="text" id="description" name="description" required minlength="1"
-                maxlength="100" size="30" /><br>
+            <textarea v-model="description" id="description" name="description" required minlength="1"
+                maxlength="100" size="30" rows="4" cols="50"></textarea><br>
 
             <label for="type">Type&nbsp;:</label><br>
 

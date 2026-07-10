@@ -154,7 +154,7 @@ input[type="number"] {
 }
 
 input {
-  width: 17rem;
+  width: 60%;
   padding: 0.3rem;
   border-radius: 4px;
   border: 1px solid #C4F5E1;
@@ -163,8 +163,21 @@ input {
   color: #C4F5E1;
 }
 
+textarea {
+  width: 60%;
+  height: 4rem;
+  min-height: 4rem;
+  padding: 0.3rem;
+  border-radius: 4px;
+  border: 1px solid #C4F5E1;
+  font-size: 1.3rem;
+  background-color: #003A38;
+  color: #C4F5E1;
+  resize: vertical;
+}
+
 select {
-  width: 17.7rem;
+  width: 60%;
   padding: 0.3rem;
   border-radius: 4px;
   border: 1px solid #C4F5E1;

@@ -115,7 +115,7 @@ app.patch('/api/goals/', (req, res) => {
 });
 
 // supprimer un objectif
-app.delete('/api/goals/', (req, res) => {
+app.delete('/api/goal/', (req, res) => {
     const goal_id = req.body.goal_id;
     db.run('DELETE FROM goals WHERE goal_id = ?', [goal_id], (err) => {
         if (err) {
