@@ -2,7 +2,7 @@
   <div id="form">
     <Header />
     <router-view />
-    <h1>Daily goals</h1>
+    <h1>Home</h1>
     <div class="grid-container">
       <div v-for="goal in goals" :key="goal.goal_id" class="form">
         <h2>{{ goal.name }}</h2>

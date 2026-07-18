@@ -50,19 +50,6 @@ h2 {
 
 
 /* Buttons */
-/* button {
-  border-radius: 6px;
-  border: 1px solid transparent;
-  padding: 0.5rem 2rem 0.5rem 2rem;
-  min-width: 2rem;
-  font-size: 1.125rem;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #003A38;
-  cursor: pointer;
-  transition: background-color 0.25s;
-  color: #C4F5E1;
-} */
 
 .primary-button {
   border-radius: 6px;
@@ -93,9 +80,23 @@ h2 {
   gap: 1rem;
 }
 
-.icon-button {
-  width: 1rem;
-  height: 1rem;
+.icon-btn.primary-button {
+  min-width: 0;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem;
+}
+
+.icon-btn.primary-button:hover {
+  background-color: #004744;
+}
+
+.icon-btn svg {
+  width: 24px;
+  height: 24px;
+  display: block;
 }
 
 input[type="radio"].sr-only {
@@ -154,7 +155,7 @@ input[type="number"] {
 }
 
 input {
-  width: 60%;
+  width: 40%;
   padding: 0.3rem;
   border-radius: 4px;
   border: 1px solid #C4F5E1;
@@ -164,7 +165,7 @@ input {
 }
 
 textarea {
-  width: 60%;
+  width: 40%;
   height: 4rem;
   min-height: 4rem;
   padding: 0.3rem;
@@ -177,40 +178,56 @@ textarea {
 }
 
 select {
-  width: 60%;
+  width: 40%;
+  min-width: 40%;
+  max-width: 40%;
+  box-sizing: border-box;
   padding: 0.3rem;
   border-radius: 4px;
   border: 1px solid #C4F5E1;
   font-size: 1.3rem;
   background-color: #003A38;
   color: #C4F5E1;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 /* Forms */
-.form {
-  margin-top: 1em;
-  background-color: #0F1B1B;
-  border-radius: 8px;
-  padding: 1em;
-}
-
-.form .close-btn.primary-button {
-  min-width: 0;
-  padding: 0.5rem;
+.form-container {
+  min-height: calc(100vh - 80px);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 1rem;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
 }
 
-.form .close-btn.primary-button:hover {
-  background-color: #004744;
+.form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 0;
+  background-color: #0F1B1B;
+  border-radius: 8px;
+  padding: 1em;
+  width: min(100%, 68rem);
+  justify-content: center;
 }
 
-.form .close-btn svg {
-  width: 24px;
-  height: 24px;
-  display: block;
+.form > div,
+
+.form label {
+  width: 100%;
+}
+
+.form input,
+.form textarea,
+.form select {
+  width: min(100%, 28rem);
+  box-sizing: border-box;
 }
 
 .goals {
@@ -231,6 +248,12 @@ select {
   flex-direction: row;
   align-items: center;
   gap: 1rem;
+}
+
+.up-left-btn {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 /* Components */
@@ -256,38 +279,48 @@ select {
   font-weight: 100;
 }
 
-.popup {
+.modal-overlay {
   position: fixed;
-  top: 10%;
-  left: 25%;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.popup {
+  position: relative;
   background-color: #0F1B1B;
   border-radius: 8px;
-  width: 50%;
-  height: fit-content;
-  padding: 0rem 0rem 3rem 0rem;
+  width: min(90%, 32rem);
+  max-width: 32rem;
+  padding: 2rem 1.5rem 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.popup form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.popup input {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .popup .close-btn {
   position: absolute;
-  top: 0;
-  right: 0;
-  background-color: #003A38;
-  cursor: pointer;
-  transition: background-color 0.25s;
-  color: #C4F5E1;
-}
-
-.popup .close-btn.primary-button {
+  top: 0.75rem;
+  right: 0.75rem;
+  margin: 0;
   min-width: 0;
   padding: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 1rem;
-}
-
-.popup .close-btn.primary-button:hover {
-  background-color: #004744;
 }
 
 .popup .close-btn svg {

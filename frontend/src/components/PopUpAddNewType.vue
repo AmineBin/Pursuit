@@ -1,39 +1,17 @@
 <template>
-    <popup class="popup">
+    <div class="popup">
         <form ref="addGoalForm" @submit.prevent="addGoal">
-            <h2>New goal</h2>
-            <label for="name">Title&nbsp;:</label><br>
+            <h2>New type</h2>
+            <label for="type">Name&nbsp;:</label><br>
 
-            <input v-model="name" type="text" id="name" name="name" required minlength="1" maxlength="30"
+            <input placeholder="ex: distance, weight, temperature..." v-model="name" type="text" id="name" name="name" required minlength="1" maxlength="30"
                 size="30" /><br>
 
-            <label for="description">Description&nbsp;:</label><br>
+            <label for="unity">Unity&nbsp;:</label><br>
+            <input placeholder="ex: km, kg, °..." v-model="unity" type="text" id="unity" name="unity" required minlength="1" maxlength="30"
+                size="30" /><br>
 
-            <textarea v-model="description" id="description" name="description" required minlength="1"
-                maxlength="100" size="30" rows="4" cols="50"></textarea><br>
-
-            <label for="type">Type&nbsp;:</label><br>
-
-            <select v-model.number="selectedTypeId" name="type_id" id="type_id">
-                <option value="" disabled>--Please choose an option--</option>
-                <option v-for="type in types" :key="type.id" :value="type.id">{{ type.name }}</option>
-            </select><br>
-
-            <!-- <label>{{ label }}</label><br> -->
-
-            <!-- <input :type="inputType" v-model="goalValue" id="goalValue" name="value" min="0" :disabled="status === 'disabled'" required /><br> -->
-
-            <label for="frequency">Frequency&nbsp;:</label><br>
-
-            <fieldset style="display: flex; gap: 8px; border: none; padding: 0;">
-                <div v-for="frequency in frequencies" :key="frequency.frequency_id">
-                    <input v-model.number="selectedFrequencyId" type="radio" :id="frequency.frequency_id"
-                        name="frequency" :value="frequency.frequency_id" class="sr-only" />
-                    <label :for="frequency.frequency_id" class="radio-button">{{ frequency.name }}</label>
-                </div>
-            </fieldset><br>
-            <!-- <button type="cancel" onclick="window.history.back();">Cancel</button> -->
-            <button type="button" @click="$emit('closePopup')" class="close-btn">
+            <button type="button" @click="$emit('closePopup')" class="icon-btn primary-button close-btn">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -44,21 +22,21 @@
                     </g>
                 </svg>
             </button>
-            <button type="submit" class="primary-button">Create goal</button>
+            <button type="submit" class="primary-button">Create type</button>
         </form>
-    </popup>
+    </div>
 </template>
 
 <script>
 export default {
-    name: "PopUpCreateGoal",
+    name: "PopUpAddNewType",
 
     data() {
         return {
             types: [],
             frequencies: [],
             name: '',
-            description: '',
+            unity: '',
             selectedTypeId: '',
             selectedFrequencyId: '',
         }
